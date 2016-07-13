@@ -1,12 +1,11 @@
-<?php
+<?php namespace Omnipay\Swipehq\Message;
 
-namespace Omnipay\Swipehq\Message;
+use Omnipay\Tests\TestCase;
 
-use Omnipay\TestCase;
-
-class CompleteAuthorizeResponseTest extends TestCase {
-   
-    public function testCompletePurchaseSuccess(){
+class CompleteAuthorizeResponseTest extends TestCase
+{
+    public function testCompletePurchaseSuccess()
+    {
         $httpResponse = $this->getMockHttpResponse('CompletePurchaseSuccess.txt');
         $response = new PaymentPageCompleteAuthorizeResponse($this->getMockRequest(), $httpResponse->json());
 
@@ -17,7 +16,8 @@ class CompleteAuthorizeResponseTest extends TestCase {
         $this->assertSame('d123456', $response->getTransactionReference());
     }
 
-    public function testCompletePurchaseFailure(){
+    public function testCompletePurchaseFailure()
+    {
         $httpResponse = $this->getMockHttpResponse('CompletePurchaseFailure.txt');
         $response = new PaymentPageCompleteAuthorizeResponse($this->getMockRequest(), $httpResponse->json());
 
@@ -29,6 +29,4 @@ class CompleteAuthorizeResponseTest extends TestCase {
         $this->assertSame('declined', $response->getStatus());
         $this->assertSame('no', $response->getTransactionApproved());
     }
-
-    
 }

@@ -1,6 +1,4 @@
-<?php
-
-namespace Omnipay\Swipehq\Message;
+<?php namespace Omnipay\Swipehq\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
@@ -13,8 +11,8 @@ use Omnipay\Common\Message\RedirectResponseInterface;
  */
 
 
-class PaymentPageAuthorizeResponse extends AbstractResponse implements RedirectResponseInterface {
-
+class PaymentPageAuthorizeResponse extends AbstractResponse implements RedirectResponseInterface
+{
     protected $endpoint = 'https://payment.swipehq.com';
 
     /**
@@ -22,7 +20,8 @@ class PaymentPageAuthorizeResponse extends AbstractResponse implements RedirectR
      *
      * @return string Message e.g. OK
      */
-    public function getMessage(){
+    public function getMessage()
+    {
         return isset($this->data['message']) ? (string) $this->data['message'] : null;
     }
 
@@ -32,7 +31,8 @@ class PaymentPageAuthorizeResponse extends AbstractResponse implements RedirectR
      *
      * @return string A response code from the payment gateway. e.g. 200
      */
-    public function getCode(){
+    public function getCode()
+    {
         return isset($this->data['response_code']) ? (string) $this->data['response_code'] : null;
     }
 
@@ -42,12 +42,13 @@ class PaymentPageAuthorizeResponse extends AbstractResponse implements RedirectR
      *
      * @return string A reference provided by the gateway to represent this transaction.  The identifier.
      */
-    public function getTransactionReference(){
-        if(empty($this->data['data'])){
+    public function getTransactionReference()
+    {
+        if (empty($this->data['data'])) {
             return null;
         } else {
             $data = $this->data['data'];
-            if(empty($data['identifier'])){
+            if (empty($data['identifier'])) {
                 return null;
             } else {
                 return (string) $data['identifier'];
@@ -62,7 +63,8 @@ class PaymentPageAuthorizeResponse extends AbstractResponse implements RedirectR
      * As we need to redirect the browser we return false (the transaction is not yet complete)
      * @return boolean
      */
-    public function isSuccessful(){
+    public function isSuccessful()
+    {
         return false;
     }
 
@@ -73,7 +75,8 @@ class PaymentPageAuthorizeResponse extends AbstractResponse implements RedirectR
      * redirected to the offsite payment gateway to process the credit card
      * @return boolean
      */
-    public function isRedirect(){
+    public function isRedirect()
+    {
         return true;
     }
 
@@ -84,7 +87,8 @@ class PaymentPageAuthorizeResponse extends AbstractResponse implements RedirectR
      * Example: https://payment.swipehq.com/?identifier_id=XXXX
      * @ return url
      */
-    public function getRedirectUrl(){
+    public function getRedirectUrl()
+    {
         return $this->endpoint . '/?' . http_build_query($this->getRedirectData());
     }
 
@@ -94,7 +98,8 @@ class PaymentPageAuthorizeResponse extends AbstractResponse implements RedirectR
      *
      * @return string
      */
-    public function getRedirectMethod(){
+    public function getRedirectMethod()
+    {
         return 'GET';
     }
 
@@ -104,9 +109,8 @@ class PaymentPageAuthorizeResponse extends AbstractResponse implements RedirectR
      *
      * @ return array
      */
-    public function getRedirectData(){
+    public function getRedirectData()
+    {
         return array('identifier_id' => $this->getTransactionReference());
     }
-
-    
 }

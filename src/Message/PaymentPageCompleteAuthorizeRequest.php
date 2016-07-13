@@ -1,6 +1,4 @@
-<?php
-
-namespace Omnipay\Swipehq\Message;
+<?php namespace Omnipay\Swipehq\Message;
 
 use Omnipay\Common\Exception\InvalidResponseException;
 use GuzzleHttp\Client;
@@ -13,33 +11,36 @@ use GuzzleHttp\Client;
  */
 
 
-class PaymentPageCompleteAuthorizeRequest extends PaymentPageAuthorizeRequest{
-
+class PaymentPageCompleteAuthorizeRequest extends PaymentPageAuthorizeRequest
+{
     protected $endpoint = 'https://api.swipehq.com/verifyTransaction.php';
 
     // Merchant ID
-    public function getMerchantId(){
+    public function getMerchantId()
+    {
         return $this->getParameter('merchant_id');
     }
 
-    public function getMerchant_id(){
+    public function getMerchant_id()
+    {
         return $this->getParameter('merchant_id');
     }
 
     // API Key
-    public function getApiKey(){
+    public function getApiKey()
+    {
         return $this->getParameter('api_key');
     }
 
-    public function getApi_key(){
+    public function getApi_key()
+    {
         return $this->getParameter('api_key');
     }
-
        
-    public function getData(){
-
+    public function getData()
+    {
         // validation check.  The Live Payment Notification should have provided the identifier_id
-        $result = $this->httpRequest->request->get('identifier_id');
+        $result = $this->httpRequest->query->get('identifier_id');
         if (empty($result)) {
             throw new InvalidResponseException;
         }
@@ -49,16 +50,16 @@ class PaymentPageCompleteAuthorizeRequest extends PaymentPageAuthorizeRequest{
         
         $data['api_key'] = $this->getApiKey();
         $data['merchant_id'] = $this->getMerchantId();
-        $data['identifier_id'] = $this->httpRequest->request->get('identifier_id'); 
-        $data['transaction_id'] = $this->httpRequest->request->get('transaction_id');
+        $data['identifier_id'] = $this->httpRequest->query->get('identifier_id');
+        $data['transaction_id'] = $this->httpRequest->query->get('transaction_id');
  
         return $data;
     }
 
 
     // send a message server to server
-    public function send(){
-        
+    public function send()
+    {
         // Variables
         $headers = null;
         $data = $this->getData();
@@ -73,9 +74,8 @@ class PaymentPageCompleteAuthorizeRequest extends PaymentPageAuthorizeRequest{
 
 
     // create response
-    protected function createResponse($data){
+    protected function createResponse($data)
+    {
         return $this->response = new PaymentPageCompleteAuthorizeResponse($this, $data);
     }
-
-   
 }

@@ -1,56 +1,61 @@
-<?php
-
-namespace Omnipay\Swipehq\Message;
+<?php namespace Omnipay\Swipehq\Message;
 
 use Omnipay\Common\Message\AbstractRequest;
-use GuzzleHttp\Client;
 
 /**
  * PaymentPage Authorize Request (from authorize & purchase methods)
  *
- * Objective: obtain an identifier from Swipe HQ
+ * The objective is to obtain an identifier from SwipeHQ
  */
 
-class PaymentPageAuthorizeRequest extends AbstractRequest {
-
+class PaymentPageAuthorizeRequest extends AbstractRequest
+{
     protected $endpoint = 'https://api.swipehq.com/createTransactionIdentifier.php';
 
     // Merchant ID
-    public function getMerchantId(){
+    public function getMerchantId()
+    {
         return $this->getParameter('merchant_id');
     }
 
-    public function getMerchant_id(){
+    public function getMerchant_id()
+    {
         return $this->getParameter('merchant_id');
     }
 
-    public function setMerchantId($value){
+    public function setMerchantId($value)
+    {
         return $this->setParameter('merchant_id', $value);
     }
 
-    public function setMerchant_id($value){
+    public function setMerchant_id($value)
+    {
         return $this->setParameter('merchant_id', $value);
     }
 
     // API Key
-    public function getApiKey(){
+    public function getApiKey()
+    {
         return $this->getParameter('api_key');
     }
 
-    public function getApi_key(){
+    public function getApi_key()
+    {
         return $this->getParameter('api_key');
     }
 
-    public function setApiKey($value){
+    public function setApiKey($value)
+    {
         return $this->setParameter('api_key', $value);
     }
 
-    public function setApi_key($value){
+    public function setApi_key($value)
+    {
         return $this->setParameter('api_key', $value);
     }
 
-    public function getData(){
-
+    public function getData()
+    {
         $data = array();
 
         $this->validate('amount', 'returnUrl', 'notifyUrl');
@@ -65,7 +70,7 @@ class PaymentPageAuthorizeRequest extends AbstractRequest {
         // Live Payment Notifications
         $data['td_lpn_url'] = $this->getParameter('notifyUrl');
 
-        $data['td_item'] = $this->getDescription();  
+        $data['td_item'] = $this->getDescription();
         $data['td_amount'] = $this->getAmount();      // method in AbstractRequest class
         
         // Email plus address stored in the card
@@ -79,9 +84,13 @@ class PaymentPageAuthorizeRequest extends AbstractRequest {
     }
 
 
-    // send a message server to server
-    public function send(){
-        
+    /**
+     * Send request
+     *
+     * @return Omnipay\Swipehq\Message\PaymentPageAuthorizeResponse
+     */
+    public function send()
+    {
         // Variables
         $headers = null;
         $data = $this->getData();
@@ -89,14 +98,35 @@ class PaymentPageAuthorizeRequest extends AbstractRequest {
         // send request to payment gateway
         $httpResponse = $this->httpClient->post($this->endpoint, $headers, $data)->send();
 
-
-        // sends data to the below function
-        $create_response = $this->createResponse($httpResponse->json());
-        return $create_response;
+        // passes data to the below function
+        return $this->createResponse($httpResponse->json());
     }
 
-    protected function createResponse($data){
-        $this->response = new PaymentPageAuthorizeResponse($this, $data);
-        return $this->response;
+    /**
+     * Send request; data provided
+     *
+     * @return Omnipay\Swipehq\Message\PaymentPageAuthorizeResponse
+     */
+    public function sendData($data)
+    {
+        // Variables
+        $headers = null;
+
+        // send request to payment gateway
+        $httpResponse = $this->httpClient->post($this->endpoint, $headers, $data)->send();
+
+        // passes data to the below function
+        return $this->createResponse($httpResponse->json());
+    }
+    
+    /**
+     * Create an authorize response
+     *
+     * @param  PaymentPageAuthorizeResponse $data
+     * @return Omnipay\Swipehq\Message\PaymentPageAuthorizeResponse
+     */
+    protected function createResponse($data)
+    {
+        return $this->response = new PaymentPageAuthorizeResponse($this, $data);
     }
 }
