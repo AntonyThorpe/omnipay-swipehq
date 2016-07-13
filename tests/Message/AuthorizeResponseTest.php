@@ -1,11 +1,11 @@
-<?php
+<?php namespace Omnipay\Swipehq\Message;
 
-namespace Omnipay\Swipehq\Message;
-use Omnipay\TestCase;
+use Omnipay\Tests\TestCase;
 
-class PxPayAuthorizeResponseTest extends TestCase{
-    
-    public function testPurchaseSuccess(){
+class PxPayAuthorizeResponseTest extends TestCase
+{
+    public function testPurchaseSuccess()
+    {
         $httpResponse = $this->getMockHttpResponse('PurchaseSuccess.txt');
         $response = new PaymentPageAuthorizeResponse($this->getMockRequest(), $httpResponse->json());
 
@@ -17,7 +17,8 @@ class PxPayAuthorizeResponseTest extends TestCase{
         $this->assertSame('GET', $response->getRedirectMethod());
     }
 
-    public function testPurchaseFailure(){
+    public function testPurchaseFailure()
+    {
         $httpResponse = $this->getMockHttpResponse('PurchaseFailure.txt');
         $response = new PaymentPageAuthorizeResponse($this->getMockRequest(), $httpResponse->json());
 
@@ -27,5 +28,4 @@ class PxPayAuthorizeResponseTest extends TestCase{
         $this->assertSame($response->getCode(), "400", "Response Code is 400");
         $this->assertSame('Access Denied', $response->getMessage(), "Response Message is 'Access Denied'");
     }
-    
 }
