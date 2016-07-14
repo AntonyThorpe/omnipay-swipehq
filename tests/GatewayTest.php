@@ -23,7 +23,7 @@ class GatewayTest extends GatewayTestCase
             'currency' => 'NZD',
             'card' => array(
                 'email' => 'ed@everest.net',
-                'billingFirstName' => 'Edmond',
+                'billingFirstName' => 'Edmund',
                 'billingLastName' => 'Hillary'
             )
         );
