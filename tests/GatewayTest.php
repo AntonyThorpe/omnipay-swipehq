@@ -89,7 +89,7 @@ class GatewayTest extends GatewayTestCase
 
     public function testCompletePurchaseSuccess()
     {
-        $this->getHttpRequest()->query->replace(array('identifier_id' => 'bar123'));
+        $this->getHttpRequest()->request->replace(array('identifier_id' => 'bar123'));
         $this->setMockHttpResponse('CompletePurchaseSuccess.txt');
         $response = $this->gateway->completePurchase($this->options)->send();
 
@@ -112,7 +112,7 @@ class GatewayTest extends GatewayTestCase
 
     public function testCompletePurchaseFailure()
     {
-        $this->getHttpRequest()->query->replace(array('identifier_id' => 'bar123'));
+        $this->getHttpRequest()->request->replace(array('identifier_id' => 'bar123'));
         $this->setMockHttpResponse('CompletePurchaseFailure.txt');
         $response = $this->gateway->completePurchase($this->options)->send();
 

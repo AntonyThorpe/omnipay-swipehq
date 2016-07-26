@@ -40,7 +40,7 @@ class PaymentPageCompleteAuthorizeRequest extends PaymentPageAuthorizeRequest
     public function getData()
     {
         // validation check.  The Live Payment Notification should have provided the identifier_id
-        $result = $this->httpRequest->query->get('identifier_id');
+        $result = $this->httpRequest->request->get('identifier_id');
         if (empty($result)) {
             throw new InvalidResponseException;
         }
@@ -50,8 +50,8 @@ class PaymentPageCompleteAuthorizeRequest extends PaymentPageAuthorizeRequest
         
         $data['api_key'] = $this->getApiKey();
         $data['merchant_id'] = $this->getMerchantId();
-        $data['identifier_id'] = $this->httpRequest->query->get('identifier_id');
-        $data['transaction_id'] = $this->httpRequest->query->get('transaction_id');
+        $data['identifier_id'] = $this->httpRequest->request->get('identifier_id');
+        $data['transaction_id'] = $this->httpRequest->request->get('transaction_id');
  
         return $data;
     }
